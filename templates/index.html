@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ classroom.name }} - Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="chat">
+        <h1>Klassenraum: {{ classroom.name }}</h1>
+        <p>
+            <strong>Teilnehmer:</strong>
+            {% if classroom.participants %}
+                {{ classroom.participants|map(attribute='name')|join(', ') }}
+            {% else %}
+                Noch keine Teilnehmer.
+            {% endif %}
+        </p>
+        <div id="messages">
+            {% for message in classroom.messages %}
+                <p>
+                    <strong>{{ message.sender.name }}</strong>
+                    <span class="timestamp">({{ message.timestamp }})</span>:
+                    {{ message.content }}
+                </p>
+            {% endfor %}
+        </div>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Dein Name" required>
+            <input type="text" name="content" placeholder="Nachricht..." required>
+            <button type="submit">Senden</button>
+        </form>
+    </div>
+</body>
+</html>
